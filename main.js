@@ -1,18 +1,32 @@
-var electron = require('electron')
-var path = require('path')
-var Menu = electron.Menu
-var app = electron.app
-var menu = require('./main/menu')
-var windows = require('./main/windows')
+let electron = require('electron')
+let path = require('path')
+let Menu = electron.Menu
+let app = electron.app
+let menu = require('./main/menu')
+let windows = require('./main/windows')
+let int = parseInt
 
 app.on('ready', function () {
-	var screenElectron = electron.screen;
-	var mainScreen = screenElectron.getPrimaryDisplay();
-	var dimensions = mainScreen.size;
+	let screenElectron = electron.screen;
+	let mainScreen = screenElectron.getPrimaryDisplay();
+	let {width, height} = mainScreen.workAreaSize;
+	let xoff = mainScreen.size.width - width, yoff=mainScreen.size.height - height;
 	Menu.setApplicationMenu(menu)
-	windows.create("file://" + path.resolve(__dirname, 'renderer', 'index.html'),dimensions.width/2,0,dimensions.width-300,dimensions.height,true)
-	windows.create("file://" + path.resolve(__dirname, 'renderer', 'AI1.html'),0,0,300,dimensions.height/2)
-	windows.create("file://" + path.resolve(__dirname, 'renderer', 'AI2.html'),0,dimensions.height/2,300,dimensions.height/2)
+	windows.create("file://" + path.resolve(__dirname, 'renderer', 'index.html'),
+		300,0,
+		width-300,height,
+		true
+	)
+
+	windows.create("file://" + path.resolve(__dirname, 'renderer', 'AI1.html'),
+		0,0,
+		300,int(height/2),
+	)
+
+	windows.create("file://" + path.resolve(__dirname, 'renderer', 'AI2.html'),
+		0,int((height/2)+yoff),
+		300,int(height/2),
+	)
 })
 
 app.on('window-all-closed', function () {

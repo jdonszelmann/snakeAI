@@ -24,7 +24,6 @@ function create (url,xpos,ypos,width,height,frame=false) {
     y: ypos,
     acceptFirstMouse: true,
     resizable:false,
-    alwaysOnTop: true,
     frame:frame,
   })
 
