@@ -7,9 +7,11 @@ var snake = function( p ) {
 	let width = 640
 	let height = 480
 	let snakes = []
+	let applex, appley
 
 	class snake{
-		constructor(){
+		constructor(ai){
+			this.AI = ai
 			this.x = int(p.random(cols))
 			this.y = int(p.random(rows))
 			this.size = 5
@@ -63,6 +65,17 @@ var snake = function( p ) {
 			if(this.y < 0){
 				this.y = rows
 			}
+			if(this.x == applex && this.y == appley){
+				applex = int(p.random(cols))
+				appley = int(p.random(rows))
+				this.size += 1
+			}
+			for(let i of this.blocks){
+				if(i.x == this.x && i.y == this.y){
+					
+				}
+			}
+			send_message(this.AI,"hey")
 
 			this.blocks.push({x:this.x,y:this.y})
 			if(this.blocks.length > this.size){
@@ -73,14 +86,17 @@ var snake = function( p ) {
 	}
 
 	p.setup = function(){
+		applex = int(p.random(cols))
+		appley = int(p.random(rows))
 		p.createCanvas(width,height)
-		snakes.push(new snake())
+		snakes.push(new snake("AI1"))
+		p.frameRate(2000)
 	}
 
 	p.draw = function(){
 		p.background(51)
 		p.noStroke()
-		p.fill(0,255,255)
+		p.fill(0,255,0)
 		for(s of snakes){
 			s.update()
 			for (i of s.blocks){
@@ -89,6 +105,8 @@ var snake = function( p ) {
 				}
 			}
 		}
+		p.fill(255,0,0)
+		p.rect(applex*(width-1)/cols,appley*(height-1)/rows,(width-1)/cols,(height-1)/rows);
 		p.noFill()
 	}
 
